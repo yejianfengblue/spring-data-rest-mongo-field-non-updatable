@@ -20,6 +20,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
+ * If the "username" is contained in PUT or PATCH request body with a different value, username get updated,
+ * which is not expected.
+ *
  * Start a MongoDB on localhost:27017 before run this test
  */
 @SpringBootTest

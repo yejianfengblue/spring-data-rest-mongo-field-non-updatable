@@ -4,12 +4,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ *  {@link ReadOnlyProperty} makes username un-insertable
+ *
  * Start a MongoDB on localhost:27017 before run this test
  */
 @SpringBootTest

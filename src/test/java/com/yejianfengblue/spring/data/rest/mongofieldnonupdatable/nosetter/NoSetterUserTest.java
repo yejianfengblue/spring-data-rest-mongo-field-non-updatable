@@ -22,6 +22,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
+ * If the "username" is contained in PUT or PATCH request body with a different value, username get updated,
+ * which is not expected.
+ *
  * Start a MongoDB on localhost:27017 before run this test
  */
 @SpringBootTest
@@ -66,7 +69,6 @@ public class NoSetterUserTest {
                 .andExpect(status().isCreated())
                 .andReturn().getResponse()
                 .getHeader(HttpHeaders.LOCATION);
-        log.info("POST done");
 
         // PUT update, someone illegally include property username with another value
         this.mockMvc.perform(
@@ -74,7 +76,6 @@ public class NoSetterUserTest {
                         .contentType(RestMediaTypes.HAL_JSON)
                         .content("{ \"username\" : \"b\", \"password\" : \"2\" }"))
                 .andExpect(status().is2xxSuccessful());
-        log.info("PUT done");
 
         // username
         this.mockMvc.perform(
@@ -83,7 +84,6 @@ public class NoSetterUserTest {
                 // I want username to remain "a", not "b"
                 .andExpect(jsonPath("username").value("a"))
                 .andExpect(jsonPath("password").doesNotExist());
-        log.info("GET done");
     }
 
 
@@ -98,7 +98,6 @@ public class NoSetterUserTest {
                 .andExpect(status().isCreated())
                 .andReturn().getResponse()
                 .getHeader(HttpHeaders.LOCATION);
-        log.info("POST done");
 
         // PATCH update, someone illegally include property username with another value
         this.mockMvc.perform(
@@ -106,7 +105,6 @@ public class NoSetterUserTest {
                         .contentType(RestMediaTypes.MERGE_PATCH_JSON)
                         .content("{ \"username\" : \"b\", \"password\" : \"2\" }"))
                 .andExpect(status().is2xxSuccessful());
-        log.info("PATCH done");
 
         // GET verify
         this.mockMvc.perform(
@@ -115,7 +113,6 @@ public class NoSetterUserTest {
                 // I want username to remain "a", not "b"
                 .andExpect(jsonPath("username").value("a"))
                 .andExpect(jsonPath("password").doesNotExist());
-        log.info("GET done");
     }
 
     @Test
@@ -129,7 +126,6 @@ public class NoSetterUserTest {
                 .andExpect(status().isCreated())
                 .andReturn().getResponse()
                 .getHeader(HttpHeaders.LOCATION);
-        log.info("POST done");
 
         // PATCH update, someone illegally include property username with another value
         this.mockMvc.perform(
@@ -137,7 +133,6 @@ public class NoSetterUserTest {
                         .contentType(RestMediaTypes.MERGE_PATCH_JSON)
                         .content("{ \"password\" : \"2\" }"))
                 .andExpect(status().is2xxSuccessful());
-        log.info("PATCH done");
 
         // GET verify
         this.mockMvc.perform(
@@ -145,7 +140,6 @@ public class NoSetterUserTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("username").value("a"))
                 .andExpect(jsonPath("password").doesNotExist());
-        log.info("GET done");
     }
 
     @Test
